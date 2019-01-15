@@ -13,7 +13,7 @@ console.log(`https://api.giphy.com/gifs/search?q=Iguazu+Falls&api_key=HyNMA79NF1
 //Make a function call that takes each topic in the array and remakes the buttons on the page
 function buttonMaker() {
     for (i=0; i < topics.length; i++) {
-        $("#buttons").append(`<button>${topics[i]}</button>`);
+        $("#buttons").append(`<button value='${topics[i]}'>${topics[i]}</button>`);
     }
 }
 
@@ -31,36 +31,34 @@ buttonMaker();
 //Add a form that take the value from a user input box and adds it to the 'topics' array
 
 $(document).ready(function () {
-    $("#submit").click(function (e) {
+    $("#submitBtn").click(function (e) {
         e.preventDefault();
             $("#buttons").empty();
             topics.push($("#searchTerm").val());
             buttonMaker(); 
-            e.preventDefault();   
-            $("#formReset").html("<form>Add a natural wonder: <br><input id='searchTerm' type='text' name='searchTerm'><input id='submit' type='submit' value='Submit'></form>");
-
+            this.form.reset();
     })
 })
 
-var xhr = $.get("http://api.giphy.com/v1/gifs/search?q=Peyto+Lake&api_key=HyNMA79NF1M6xW9PfpzItOwkht0IrLZp&limit=5");
-xhr.done(function(response) { console.log("success got data", response); 
-console.log(response.data[0].images.fixed_height.url);
-$("#gifs").append(`<img src=${response.data[0].images.fixed_height.url}>`);
+// var xhr = $.get("http://api.giphy.com/v1/gifs/search?q=Peyto+Lake&api_key=HyNMA79NF1M6xW9PfpzItOwkht0IrLZp&limit=5");
+// xhr.done(function(response) { console.log("success got data", response); 
+// console.log(response.data[0].images.fixed_height.url);
+// $("#gifs").append(`<img src=${response.data[0].images.fixed_height.url}>`);
 
 
 
-});
+// });
 
-$("#buttons").click(function() {
-
-
+$("button").click(function() {
+    queryURL = `http://api.giphy.com/v1/gifs/search?q=${this.value}&api_key=HyNMA79NF1M6xW9PfpzItOwkht0IrLZp&limit=5`
+    console.log(this.value);
     $.ajax({
         url: queryURL,
-        method: "GET",
-        dataType: "jsonp"
+        method: "GET"
     }).done(function(response) {
-        console.log(response.data[0].images.fixed_height.url);
-        $("#gifs").append(`<img src=${response.data[1].images.fixed_height.url}>`);
+        for (i=0; i < 5; i++) {
+            $("#gifs").append(`<img src=${response.data[i].images.fixed_height.url}>`);
+        }
     })
 
 })
