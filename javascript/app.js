@@ -1,16 +1,12 @@
 var topics = ["Niagara Falls", "The Grand Canyon", "Peyto Lake", "Cliffs of Moher", "Mount Bromo", "Spencer Lake", "Salar de Uyuni", "Ha Long Bay", "The Dead Sea", "Zhangjiajie National Forest Park", "Arches National Park", "Uluru", "The Galapagos Islands", "Yellowstone National Park", "Pamukkale", "Iguazu Falls", "Verdon Gorge", "Mud volcanos", "Pulpit Rock", "Sequoia National Park", "El Yunque National Forest", "The Sahara Desert", "The Blyde River Canyon", "Marble Caves", "The Matterhorn", "Victoria Falls"]
 
-var queryURL = "http://api.giphy.com/v1/gifs/search?q=Peyto+Lake&api_key=HyNMA79NF1M6xW9PfpzItOwkht0IrLZp&limit=5";
+var queryURL;
 
-var queryParams = {"api-key": "HyNMA79NF1M6xW9PfpzItOwkht0IrLZp"};
 
-// queryParams.q = $("#search-term").val().trim();
-
-console.log(`https://api.giphy.com/gifs/search?q=Iguazu+Falls&api_key=HyNMA79NF1M6xW9PfpzItOwkht0IrLZp&limit=10`)
 
 function gifGetter(e) {
     var {target} = e;
-    queryURL = `http://api.giphy.com/v1/gifs/search?q=${target.value}&api_key=HyNMA79NF1M6xW9PfpzItOwkht0IrLZp&limit=10`
+    queryURL = `https://api.giphy.com/v1/gifs/search?q=${target.value}&api_key=HyNMA79NF1M6xW9PfpzItOwkht0IrLZp&limit=10`
     $.ajax({
         url: queryURL,
         method: "GET"
@@ -18,10 +14,14 @@ function gifGetter(e) {
         //When a button is clicked, the page grabs 10 static, non-animated gif images and places them on the page
         response.data.map( function(image) { 
             var gif = document.createElement("img");
+            var rating = document.createElement("p");
+            var divForGrouping  =   document.createElement("div");
             gif.src = image.images.fixed_height_still.url;
+            rating.innerHTML = `Rating: ${image.rating}`;
             gif.dataset.still = image.images.fixed_height_still.url;
             gif.dataset.animate = image.images.fixed_height.url;
-            gif.dataset.state = "still"
+            gif.dataset.state = "still";
+            console.log(target);
             gif.onclick = function(event) {
                 
                 const {target} = event;
@@ -34,8 +34,9 @@ function gifGetter(e) {
                     $(this).attr("data-state", "still");
                 }    
             };
-            $("#gifs").append(gif);         
-
+            $("#gifs").append(divForGrouping);
+            divForGrouping.append(gif);
+            divForGrouping.append(rating);         
         })
     })
 }
