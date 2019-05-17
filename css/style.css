@@ -18,6 +18,11 @@ button {
     color: white;
 }
 
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
 #submitBtn {
     background-color: teal;
     border-radius: 5px;
